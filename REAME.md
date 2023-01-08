@@ -5,7 +5,8 @@
     pyperclip 모듈 사용
 
 # 23.01.06 시간 비교 모듈 설치
-- 모듈 (dateutil, beautifulsoup4, pandas)
+- 모듈 (dateutil, beautifulsoup4, pandas, requests)
     pip install python-dateutil
     pip install beautifulsoup4
     pip install pandas
+    pip install requests

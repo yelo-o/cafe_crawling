@@ -36,7 +36,7 @@ options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"]) # 쓸모없는 로그 삭제
 browser = webdriver.Chrome(options=options)
 browser.maximize_window() # 윈도우 최대로 확대
-url = "https://cafe.naver.com/ak573"
+url = "https://cafe.naver.com/ak573/"
 browser.get(url)
 # 로그인 화면 이동
 btnToLogin = browser.find_element(By.XPATH,'//*[@id="gnb_login_button"]')
@@ -61,12 +61,16 @@ browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
 browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
 
 # 제목
+# url = 'https://cafe.naver.com/ak573/'
 today = str(date.today()) # 오늘 날짜 '2023-01-06' 과 같은 형식으로 지정
-
 title = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.article')]
 numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
-# author = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.m-tcol-c')]
+urls = []
+for num in numList:
+    urls.append(url+num)
 writtenDate = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.td_date')]
+print(urls)
+# author = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.m-tcol-c')]
 # print(title)
 # print(numList)
 # print(writtenDate)
@@ -77,8 +81,9 @@ total_data['순번'] = pd.Series(numList)
 total_data['제목'] = pd.Series(title)
 # total_data['작성자'] = pd.Series(author)
 total_data['날짜'] = pd.Series(writtenDate)
+total_data['url'] = pd.Series(urls)
 print(total_data)
-total_data.to_excel(f"인사쟁이카페 데이터 크롤링{today}.xlsx",index=True)
+total_data.to_excel(f"인사쟁이카페 데이터 크롤링_{today}.xlsx",index=True)
 
 # titleList = browser.find_elements(By.CLASS_NAME,'article')
 # for j in titleList:
@@ -120,4 +125,3 @@ total_data.to_excel(f"인사쟁이카페 데이터 크롤링{today}.xlsx",index=
 
 # # 
 # for page in tqdm(range(1,11)):
-    

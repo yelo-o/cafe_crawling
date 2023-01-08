@@ -1,22 +1,13 @@
-import time
-from datetime import datetime, timedelta
-from datetime import date
-from dateutil.relativedelta import relativedelta
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-import openpyxl
-import sys, os
-import pyperclip
-import pyautogui as pg
+numList = ['751130', '751103', '751093', '751092', '751073', '751053', '750996', '750989', '750950', '750947', '750932', '750909', '750895', '750887', '750886', '750857', '750842', '750836', '750820', '750811', '750804', '750777', '750738', '750681', '750670', '750644', '750627', '750619', '750565', '750564', '750560', '750517', '750515', '750511', '750505', '750503', '750498', '750475', '750467', '750458', '750453', '750448', '750438', '750426', '750425', '750419', '750400', '750380', '750378', '750374']
+urls = []
+url = 'https://cafe.naver.com/ak573/'
+for num in numList:
+    # print(num, type(num))
+    # print(url+num, type(url+num))
+    urls.append(url+num)
+    print(urls)
+    # urlz = urls.append(10)
+    # print(type(urlz))
+    
 
-
-# 날짜 지정
-today = str(date.today()) # 오늘 날짜 '2023-01-06' 과 같은 형식으로 지정
-now = datetime.now()
-before_1day = now - timedelta(days=1, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-print(before_1day.now)
-before_2day = now - timedelta(days=2, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-before_2day.now()
-before_3day = now - timedelta(days=3, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-selected_days = []
+# print(type(urlz))
