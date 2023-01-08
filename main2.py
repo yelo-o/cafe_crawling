@@ -1,4 +1,6 @@
 import requests
+import urllib
+import urllib2
 import time
 from datetime import datetime, timedelta
 from datetime import date
@@ -13,6 +15,7 @@ import pyautogui as pg
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 from credentials import u_id, u_pw
+
 
 # 로그인
 """
@@ -44,35 +47,53 @@ browser.get(url)
 btnToLogin = browser.find_element(By.XPATH,'//*[@id="gnb_login_button"]')
 btnToLogin.click()
 login()
-# 키워드 검색
-srh = browser.find_element(By.XPATH,'//*[@id="topLayerQueryInput"]') # 검색창
-srh_krd = '선물' # 검색 키워드 변수 저장
-srh.send_keys(srh_krd)
-btn_srh = browser.find_element(By.XPATH,'//*[@id="cafe-search"]/form/button')
-btn_srh.click()
-time.sleep(3)
 
-# iframe 진입
-browser.switch_to.frame('cafe_main')
-soup = bs(browser.page_source, 'html.parser')
+url = "https://cafe.naver.com/ak573/751180"
+browser.get(url)
 
-# # 게시글 50개씩 보이게 하기
-# browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
-# browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
+#Requests
+res = requests.get(url)
+res.status_code
 
 # 리스트 번호 불러오기
-numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
-urls = [] # 기본 url + 리스트번호 로 파싱할 url주소들 얻기
-for num in numList:
-    urls.append(url+num)
-# print(urls)
-page = requests.get(urls[0])
 soup = bs(browser.page_source, 'html.parser')
-# list = soup.find_all(attrs={'class': 'content CafeViewer'})
-# list = soup.select_one(attrs={'class':'se-fs- se-ff-   '})
-# list = soup.find_all('span', attrs={'class':'se-fs- se-ff-   '})
-# list = soup.find_all('div', attrs={'class':'se-module se-module-text'})
-list = soup.find_all('div', attrs={'class':'content CafeViewer'})
-# content = soup.find('div.article_container')
+# list = soup.find_all('div', attrs={'class':'content CafeViewer'})
+# list = soup.find('div', class_ ='content CafeViewer')
+rows = soup.find_all("iframe", attrs={"id" :"cafe_main"}).find("div", attrs = {"class" : "se-main-container"})
+
+iframe = soup.find("iframe", attrs={"id" :"cafe_main"})
+iframe = soup.find("iframe", attrs={"id" :"cafe_main"}).select_one('#document').attrs['src']
+iframe_src = soup.select_one('#document')
+src = rows['src']
+response = requests.get(src)
+soup_src = bs(response.text, 'html.parser')
+dd = soup_src.find('span')
+print(dd(['href']))
+
+print(rows)
+rows = soup.find("div", attrs={"class" : "se-module se-module-text"})
+rows = soup.find("div", attrs={"class" : "se-module se-module-text"}).find_all("p")
+iframexx = soup.find('iframe').find_all('')
+for iframe in iframexx:
+    response = urllib.requests.urlopen(iframe.attrs['src'])
+    iframe_soup = bs(response)
+print(rows)
+
+iframe_html = browser.execute_script('return document.getElementsByTagName("iframe")[7]')
+iframe_html2 = browser.execute_script('return iframe_html.contentWindow.document')
+
+print(iframe_html)
+print(iframe_html2)
+
+with open('index.html', 'w') as f:
+    f.write(iframe_html)
+
+for element in iframe_html:
+    print(element.text)
+
+data = {
+    "key":"value"
+    }
+r = requests.post(url, json=data)
+
 print(list)
-# print(content)
