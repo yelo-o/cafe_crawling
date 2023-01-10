@@ -18,3 +18,5 @@
     - document.getElementsByTagName("iframe")
     - iframe = document.getElementsByTagName("iframe")[7]
     - iframe.contentWindow.document
+
+# 23.01.09 완전 셀레니움으로 작업하려고 함

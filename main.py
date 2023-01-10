@@ -1,3 +1,5 @@
+import requests
+import urllib
 import time
 from datetime import datetime, timedelta
 from datetime import date
@@ -11,12 +13,12 @@ import pyperclip
 import pyautogui as pg
 from bs4 import BeautifulSoup as bs
 import pandas as pd
-from credentials import u_id, u_pw
+
 
 # 로그인
 """
 pyperclip 모듈을 이용해서 아이디, 비밀번호 복사 붙여넣기
-    - > 일반 셀레니움으로 입력하면 네이버에서 크롤링 봇 감지하여 자동입력방지  
+    - > 일반 셀레니움으로 입력하면 네이버에서 크롤링 봇 감지하여 자동입력방지
 """
 def login():
     input_id = browser.find_element(By.XPATH,'//*[@id="id"]')
@@ -31,8 +33,76 @@ def login():
     pyperclip.copy(u_pw)
     input_pw.send_keys(Keys.CONTROL,'v')
     btn_lgn.click()
+    
+def keyword_search():
+    global srh_krd
+    srh = browser.find_element(By.XPATH,'//*[@id="topLayerQueryInput"]') # 검색창
+    srh_krd = '선물' # 검색 키워드 변수 저장
+    srh.send_keys(srh_krd)
+    btn_srh = browser.find_element(By.XPATH,'//*[@id="cafe-search"]/form/button')
+    btn_srh.click()
+    time.sleep(3)
 
-# 인사쟁이카페 진입
+def collect_url():
+    numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
+    global urls
+    urls = []
+    url = 'https://cafe.naver.com/ak573/'
+    for num in numList:
+        urls.append(url+num)
+        
+# 변수 설정    
+content_data = []
+time_data = []
+title_data = []
+now = datetime.now()
+st_now = str(now)
+st_now_modified = st_now[0:19].replace(':',".")
+print(st_now_modified)
+
+def collect_data():
+    global content_data, time_data, title_data
+    browser.switch_to.frame('cafe_main')
+    # 타이틀
+    try:
+        written_title = browser.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[1]/div[1]/div/h3')[0]
+        title_data.append(written_title.text)
+    except:
+        title_data.append("**접근이 불가한 게시판입니다.**")
+        pass
+    
+    # 글 작성일자 및 시간
+    try:
+        written_time = browser.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[1]/div[2]/div/div[2]/span[1]')[0]
+        time_data.append(written_time.text)
+    except:
+        time_data.append("**접근이 불가한 게시판입니다.**")
+        pass
+    
+    # 글 내용
+    try:
+        written_content = browser.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[1]/div/div[1]')[0]
+        content_data.append(written_content.text)
+    except:
+        content_data.append("**접근이 불가한 게시판입니다.**")
+        pass
+
+def moveToUrl():
+    for url in urls:
+        browser.get(url)
+        time.sleep(1)
+        collect_data()
+        
+def data_to_excel():
+    total_data = pd.DataFrame()
+    total_data['제목'] = pd.Series(title_data)
+    total_data['날짜'] = pd.Series(time_data)
+    total_data['내용'] = pd.Series(content_data)
+    total_data['url'] = pd.Series(urls)
+    print(total_data)
+    total_data.to_excel(f"인사쟁이카페 데이터 크롤링_{st_now_modified}.xlsx",index=True)
+
+# 실행 절차
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"]) # 쓸모없는 로그 삭제
 browser = webdriver.Chrome(options=options)
@@ -42,87 +112,16 @@ browser.get(url)
 # 로그인 화면 이동
 btnToLogin = browser.find_element(By.XPATH,'//*[@id="gnb_login_button"]')
 btnToLogin.click()
+today = str(date.today()) # 오늘 날짜 '2023-01-06' 과 같은 형식으로 지정
 login()
-# 키워드 검색
-srh = browser.find_element(By.XPATH,'//*[@id="topLayerQueryInput"]') # 검색창
-srh_krd = '선물' # 검색 키워드 변수 저장
-srh.send_keys(srh_krd)
-btn_srh = browser.find_element(By.XPATH,'//*[@id="cafe-search"]/form/button')
-btn_srh.click()
-time.sleep(3)
-
-# iframe 진입
-browser.switch_to.frame('cafe_main')
-soup = bs(browser.page_source, 'html.parser')
+keyword_search()
+browser.switch_to.frame('cafe_main') # iframe 진입하기
 
 # 게시글 50개씩 보이게 하기
-# browser.find_element_by_css_selector("#listSizeSelectDiv").click()
 browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
-# browser.find_element_by_xpath("/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
 browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
 
-# 제목
-# url = 'https://cafe.naver.com/ak573/'
-today = str(date.today()) # 오늘 날짜 '2023-01-06' 과 같은 형식으로 지정
-title = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.article')]
-numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
-urls = []
-for num in numList:
-    urls.append(url+num)
-writtenDate = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.td_date')]
-print(urls)
-# author = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.m-tcol-c')]
-# print(title)
-# print(numList)
-# print(writtenDate)
-
-# 판다스 데이터 밀어넣기
-total_data = pd.DataFrame()
-total_data['순번'] = pd.Series(numList)
-total_data['제목'] = pd.Series(title)
-# total_data['작성자'] = pd.Series(author)
-total_data['날짜'] = pd.Series(writtenDate)
-total_data['url'] = pd.Series(urls)
-print(total_data)
-total_data.to_excel(f"인사쟁이카페 데이터 크롤링_{today}.xlsx",index=True)
-
-# titleList = browser.find_elements(By.CLASS_NAME,'article')
-# for j in titleList:
-#     a = j.get_attribute(j.text)
-#     print(f"타이틀: {j}", a)
-
-# # 스크롤링할 데이터 담을 리스트 설정
-# list_title = []
-# list_author = []
-# list_time = []
-# list_content = []
-# title = 
-# content = browser.find_element(By.XPATH,'//*[@id="SE-6e2c1f9f-2b03-478c-b6cb-4e5e30d007fa"]/div/div/div')
-
-
-
-# # 변수 설정
-# save_path = "./"
-# count = 0
-# sData = [] # DataFrame 전환리스트 
-# nTitle = [] # 게시글 제목
-# nNickname = [] # 카페 닉네임
-# nUrl = [] # 게시글 링크
-# nContent = [] # 게시글 내용
-# nIDs = [] # 게시글 사용자 정보
-
-# # 검색
-
-# # 날짜 지정
-# today = str(date.today()) # 오늘 날짜 '2023-01-06' 과 같은 형식으로 지정
-# now = datetime.now()
-# before_1day = now - timedelta(days=1, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-# print(before_1day.now)
-# before_2day = now - timedelta(days=2, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-# before_2day.now()
-# before_3day = now - timedelta(days=3, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-# selected_days = []
-
-
-# # 
-# for page in tqdm(range(1,11)):
+collect_url()
+moveToUrl()
+data_to_excel()
+pg.alert(f"<{srh_krd}> 키워드로 검색한 결과 중 최근 50개의 게시글을 크롤링 완료하였습니다!")
