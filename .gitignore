@@ -1,0 +1,8 @@
+cVenv/
+build/
+dist/
+__pycache__/
+*.xlsx
+credentials.py
+*.exe
+*.spec
