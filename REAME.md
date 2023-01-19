@@ -7,7 +7,7 @@
 1. credentials.py
     - 네이버 아이디와 비밀번호가 있는 파일
 2. crawling.py
-    - 
-3. excels_processing.py
-    - 
+    - 네이버카페 크롤링
+3. excel_processing.py
+    - 엑셀 후처리(열너비, 가운데 정렬 등..)
 4. 
