@@ -54,7 +54,7 @@ def data_to_excel():
     index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
     total_data = pd.DataFrame({"제목" : title_list, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
     total_data.index.name = "No."
-    total_data.to_excel(f"naver cafe crawling_{crawling_time}.xlsx",index=True)
+    total_data.to_excel(f"{crawling_time}-{srh_krd}검색.xlsx",index=True)
 
 # 변수 설정
 global now, st_now, crawling_time

@@ -2,14 +2,16 @@
 import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill
+from crawling import *
 
 # 외부 변수
 from crawling import crawling_time
+from crawling import srh_krd
 
 # 엑셀 후처리
 def excel_processing():
     # dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/naver cafe crawling_2023-01-16 11.00.05.xlsx' # 테스트용
-    dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/naver cafe crawling_{crawling_time}.xlsx'
+    dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/{crawling_time}-{srh_krd}검색.xlsx'
     wb = load_workbook(dir) # 해당 경로의 엑셀 파일 불러오기
     ws = wb.active # 불러온 엑셀 파일의 시트 활성화
     
