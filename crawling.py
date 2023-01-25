@@ -57,7 +57,7 @@ def data_to_excel():
     total_data.to_excel(f"{crawling_time}-{srh_krd}검색.xlsx",index=True)
 
 # 변수 설정
-global now, st_now, crawling_time
+global now, st_now, crawling_time, srh_krd
 now = datetime.now() # 시간 변수
 st_now = str(now)
 crawling_time = st_now[0:19].replace(':',".")
@@ -65,6 +65,8 @@ print(crawling_time)
 content_data = [] # 데이터 담을 리스트
 time_data = []
 title_data = []
+srh_krd = '선물' # 검색 키워드 변수 저장
+# srh_krd = '기념품' # 검색 키워드 변수 저장
 
 
 def execute_browser():
@@ -96,10 +98,7 @@ def login():
 
 # 선물 키워드 검색
 def keyword_search():
-    global srh_krd
     srh = browser.find_element(By.XPATH,'//*[@id="topLayerQueryInput"]') # 검색창
-    # srh_krd = '선물' # 검색 키워드 변수 저장
-    srh_krd = '기념품' # 검색 키워드 변수 저장
     srh.send_keys(srh_krd)
     btn_srh = browser.find_element(By.XPATH,'//*[@id="cafe-search"]/form/button')
     btn_srh.click()

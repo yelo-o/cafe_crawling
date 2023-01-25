@@ -5,8 +5,8 @@ from openpyxl.styles import PatternFill
 from crawling import *
 
 # 외부 변수
-from crawling import crawling_time
-from crawling import srh_krd
+# from crawling import crawling_time
+# from crawling import srh_krd
 
 # 엑셀 후처리
 def excel_processing():
@@ -55,5 +55,5 @@ def excel_processing():
 
     # 저장 및 닫기
     # wb.save(filename = f'naver cafe crawling_2023-01-16 11.00.05.xlsx') # 테스트용
-    wb.save(filename = f'naver cafe crawling_{crawling_time}.xlsx')
+    wb.save(filename = f'{crawling_time}-{srh_krd}검색.xlsx')
     wb.close()
