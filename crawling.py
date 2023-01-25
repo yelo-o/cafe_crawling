@@ -1,3 +1,4 @@
+# 선물 키워드 검색
 # 크롤링 관련 모듈
 # import requests # 정적 스크래핑의 경우
 import urllib
