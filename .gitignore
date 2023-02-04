@@ -1,4 +1,5 @@
 cVenv/
+deskVenv/
 build/
 dist/
 __pycache__/
