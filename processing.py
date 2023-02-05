@@ -8,7 +8,7 @@ from crawling import *
 def excel_processing(srh_krd):
     # dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/naver cafe crawling_2023-01-16 11.00.05.xlsx' # 테스트용
     global crawling_time
-    dir = f'C:/Users/mingyu/Desktop/VenvWorkspace/cafe_crawling/{crawling_time}-{srh_krd}검색.xlsx'
+    dir = f'C:/Users/flyordig/Desktop/mgpy/cafe_crawling/{crawling_time}-{srh_krd}검색.xlsx'
     wb = load_workbook(dir) # 해당 경로의 엑셀 파일 불러오기
     ws = wb.active # 불러온 엑셀 파일의 시트 활성화
 
@@ -63,3 +63,5 @@ def excel_processing(srh_krd):
 
 excel_processing(srh_krd='선물')
 excel_processing(srh_krd='기념품')
+excel_processing(srh_krd='PC견적')
+excel_processing(srh_krd='독서실')

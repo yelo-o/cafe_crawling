@@ -2,6 +2,7 @@ cVenv/
 deskVenv/
 build/
 dist/
+.idea/
 __pycache__/
 *.xlsx
 credentials.py

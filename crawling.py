@@ -145,3 +145,6 @@ def data_to_excel(crawling_time, srh_krd):
 
 crawling_process(srh_krd='선물')
 crawling_process(srh_krd='기념품')
+crawling_process(srh_krd='PC견적')
+crawling_process(srh_krd='독서실')
+
