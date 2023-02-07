@@ -22,6 +22,7 @@ time_column = [] # 시간 열
 title_data = [] # 제목 열
 content_data = [] # 내용 열
 
+
 # 메인 프로세스
 def crawling_process(srh_krd):
     global now, st_now, crawling_time, time_data, time_column, date_column, title_data, content_data
@@ -38,9 +39,8 @@ def crawling_process(srh_krd):
     time_data = []
     content_data= []
     # 리스트 데이터들을 한번 초기화 시켜줘야 함
-
-
     # pg.alert(f"<{srh_krd}> 키워드로 검색한 결과 중 최근 50개의 게시글을 크롤링 완료하였습니다!")
+
 
 # 브라우저 실행 및 url 이동
 def execute_browser():
@@ -49,8 +49,10 @@ def execute_browser():
     options.add_experimental_option("excludeSwitches", ["enable-logging"]) # 쓸모없는 로그 삭제
     browser = webdriver.Chrome(options=options)
     browser.maximize_window() # 윈도우 최대로 확대
-    url = "https://cafe.naver.com/ak573/"
+    url = "https://cafe.naver.com/joonggonara/"
     browser.get(url)
+
+
 def login():
     # 로그인 화면 이동
     btnToLogin = browser.find_element(By.XPATH,'//*[@id="gnb_login_button"]')
@@ -67,14 +69,18 @@ def login():
     pyperclip.copy(u_pw)
     input_pw.send_keys(Keys.CONTROL,'v')
     btn_lgn.click()
+
+
 # 선물/기념품 키워드 검색
 def keyword_search(srh_krd):
     srh = browser.find_element(By.XPATH,'//*[@id="topLayerQueryInput"]') # 검색창
     srh.send_keys(srh_krd)
     btn_srh = browser.find_element(By.XPATH,'//*[@id="cafe-search"]/form/button')
     btn_srh.click()
+
+
 def collect_url():
-    # iframe 진입하기
+    # iframe 진입 하기
     browser.switch_to.frame('cafe_main')
     """
     게시글 50개씩 보이게 하기
@@ -85,12 +91,13 @@ def collect_url():
     global numList, urls, title_list
     numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
     urls = []
-    url = 'https://cafe.naver.com/ak573/'
+    url = 'https://cafe.naver.com/joonggonara/'
     for num in numList:
         urls.append(url+num)
     # 제목 담기
     title_list = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.article')]
     time.sleep(3)
+
 
 # 수집한 url로 이동
 def moveToUrl():
@@ -99,6 +106,7 @@ def moveToUrl():
         # time.sleep(1)
         browser.implicitly_wait(1)
         collect_data()
+
 
 # 제목, 내용, 작성시간 수집
 def collect_data():
@@ -128,9 +136,9 @@ def collect_data():
         content_data.append("**접근이 불가한 게시판입니다.**")
         pass
 
+
 # 엑셀에 데이터 저장
 def data_to_excel(crawling_time, srh_krd):
-    # 시간 열 나누기 (1개 -> 2개)
     global time_data
     for time in time_data:
         global date_column, time_column
@@ -138,13 +146,18 @@ def data_to_excel(crawling_time, srh_krd):
         date_column.append((a[0]))
         time_column.append((a[1]))
     # 판다스 데이터 프레임 만들기
-    index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
-    total_data = pd.DataFrame({"제목" : title_list, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
+    index_list = list(range(1, len(urls)+1))  # list(range(1,51)) # 1~50까지 넘버링
+    total_data = pd.DataFrame({"제목": title_list, "날짜": date_column, "시간": time_column, "내용": content_data, "url" : urls}, index=index_list)
     total_data.index.name = "No."
     total_data.to_excel(f"{crawling_time}-{srh_krd}검색.xlsx",index=True)
 
-crawling_process(srh_krd='선물')
-crawling_process(srh_krd='기념품')
+
+# 감동타임 키워드
+# crawling_process(srh_krd='선물')
+# crawling_process(srh_krd='기념품')
+
+# 비딩 키워드
 crawling_process(srh_krd='PC견적')
 crawling_process(srh_krd='독서실')
-
+crawling_process(srh_krd='모니터')
+crawling_process(srh_krd='사무용')
