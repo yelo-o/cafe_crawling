@@ -22,38 +22,28 @@ time_column = [] # 시간 열
 title_data = [] # 제목 열
 content_data = [] # 내용 열
 
-# 메인 프로세스(최초 로그인)
-def crawling_process(srh_krd):
+# 메인 프로세스
+def crawling_process2(srh_krd):
     global now, st_now, crawling_time, time_data, time_column, date_column, title_data, content_data
-    execute_browser() # 브라우저 실행 및 url 이동
+    execute_browser2() # 브라우저 실행 및 url 이동
     login() # 로그인 화면 이동 및 로그인
     keyword_search(srh_krd) # '선물' 키워드 검색
     collect_url() # '화면에 표시되는 50개의 url 수집'
     moveToUrl() # 수집한 url로 이동
     data_to_excel(crawling_time, srh_krd)  # 데이터 엑셀로 변환
     browser.quit() # 브라우저 종료
-    
-    # 리스트 데이터들을 한번 초기화 시켜줘야 함
     time_data = []
     time_column = []
     date_column = []
     time_data = []
     content_data= []
+    # 리스트 데이터들을 한번 초기화 시켜줘야 함
+
 
     # pg.alert(f"<{srh_krd}> 키워드로 검색한 결과 중 최근 50개의 게시글을 크롤링 완료하였습니다!")
 
-# 메인 프로세스2 (키워드 두번째 검색)
-# def crawling_process_second_keyword(srh_krd):
-#     browser.switch_to.default_content()
-#     global now, st_now, crawling_time, time_data, time_column, date_column, title_data, content_data
-#     keyword_search(srh_krd) # '선물' 키워드 검색
-#     collect_url() # '화면에 표시되는 50개의 url 수집'
-#     moveToUrl() # 수집한 url로 이동
-#     data_to_excel(crawling_time, srh_krd)  # 데이터 엑셀로 변환
-#     browser.quit() # 브라우저 종료
-    
 # 브라우저 실행 및 url 이동
-def execute_browser():
+def execute_browser2():
     global browser
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"]) # 쓸모없는 로그 삭제
@@ -86,11 +76,11 @@ def keyword_search(srh_krd):
 def collect_url():
     # iframe 진입하기
     browser.switch_to.frame('cafe_main')
-    
-    # 게시글 50개씩 보이게 하기
+    """
+    게시글 50개씩 보이게 하기
     # browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
     # browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
-    
+    """
     # 리스트 화면에 있는 글번호 담기
     global numList, urls, title_list
     numList = [i.text for i in browser.find_elements(By.CSS_SELECTOR,'.inner_number')]
@@ -153,12 +143,8 @@ def data_to_excel(crawling_time, srh_krd):
     total_data.index.name = "No."
     total_data.to_excel(f"{crawling_time}-{srh_krd}검색.xlsx",index=True)
 
-# 감동타임 키워드
-crawling_process(srh_krd='선물')
-crawling_process(srh_krd='기념품')
-
 # 비딩 키워드
-crawling_process(srh_krd='PC')
-crawling_process(srh_krd='매각')
-crawling_process(srh_krd='자산')
-crawling_process(srh_krd='견적')
+crawling_process2(srh_krd='pc견적')
+crawling_process2(srh_krd='독서실')
+crawling_process2(srh_krd='모니터')
+crawling_process2(srh_krd='사무용')
