@@ -62,11 +62,5 @@ def excel_processing(srh_krd):
     wb.close()
 
 # 감동타임 키워드
-# excel_processing(srh_krd='선물')
+excel_processing(srh_krd='선물')
 excel_processing(srh_krd='기념품')
-
-# 비딩 키워드
-excel_processing(srh_krd='PC')
-excel_processing(srh_krd='매각')
-excel_processing(srh_krd='자산')
-excel_processing(srh_krd='견적')

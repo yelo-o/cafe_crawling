@@ -156,9 +156,3 @@ def data_to_excel(crawling_time, srh_krd):
 # 감동타임 키워드
 crawling_process(srh_krd='선물')
 crawling_process(srh_krd='기념품')
-
-# 비딩 키워드
-crawling_process(srh_krd='PC')
-crawling_process(srh_krd='매각')
-crawling_process(srh_krd='자산')
-crawling_process(srh_krd='견적')
