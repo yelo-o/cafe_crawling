@@ -5,7 +5,6 @@ build/
 dist/
 .idea/
 __pycache__/
-*.xlsx
 credentials.py
 *.exe
 *.spec

@@ -2,7 +2,7 @@
 import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill
-from crawling import *
+from exectue_manually.crawling import *
 
 # 엑셀 후처리
 def excel_processing(srh_krd):

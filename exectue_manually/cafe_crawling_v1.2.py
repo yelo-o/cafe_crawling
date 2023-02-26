@@ -13,7 +13,7 @@ import pyperclip
 import pyautogui as pg
 from bs4 import BeautifulSoup as bs
 import pandas as pd
-from credentials import u_id, u_pw
+from exectue_manually.credentials import u_id, u_pw
 # 메일 관련 모듈
 import smtplib
 from email.message import EmailMessage

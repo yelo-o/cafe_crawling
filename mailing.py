@@ -8,7 +8,7 @@ from email.mime.base import MIMEBase
 from email.encoders import encode_base64
 
 # 외부 변수
-from crawling import crawling_time
+from exectue_manually.crawling import crawling_time
 
 # 메일보내기 함수
 def mailing():
