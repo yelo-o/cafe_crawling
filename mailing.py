@@ -33,13 +33,13 @@ def mailing():
     
     # 수신인
     # msg['To'] = ", ".join(['hjs0131@etners.com', 'orion@etners.com']) # 수신자가 다수일 때
-    # msg['To'] = 'nary0907@etners.com' # 김나리
-    msg['To'] = 'flyordig@etners.com' # 테스트용(본인 계정)
+    msg['To'] = 'nary0907@etners.com' # 김나리
+    # msg['To'] = 'flyordig@etners.com' # 테스트용(본인 계정)
     
     # 참조
-    # msg['Cc'] = ", ".join(['orion@etners.com','cjkaszzang@etners.com', 'mijung806@etners.com',
-    #                        'haeun1106@etners.com', 'flyordig@etners.com']) # 심대현, 권아성, 박미정, 김하은, 김민규
-    msg['Cc'] = ", ".join(['flyordig@etners.com','hyew7920@etners.com']) # 단체 테스트용
+    msg['Cc'] = ", ".join(['orion@etners.com','cjkaszzang@etners.com', 'mijung806@etners.com',
+                           'haeun1106@etners.com', 'flyordig@etners.com']) # 심대현, 권아성, 박미정, 김하은, 김민규
+    # msg['Cc'] = ", ".join(['flyordig@etners.com','hyew7920@etners.com']) # 단체 테스트용
     
     # 내용 입력
     body = MIMEText(f" 안녕하세요,\n\n 경영혁신그룹 크롤링 봇입니다. \n\n {crawling_time} 에 [인사쟁이 카페]에서 감동타임 키워드 크롤링 진행한 엑셀 파일 전달드립니다.\n\n*해당 데이터는 크롤링 시간 기준 신규 인입 데이터이며, \n\n 사람의 개입없이 자동발송되므로 BO여부를 사전에 판단하지 못 하는점 양해부탁드립니다.\n\n□ 현재 검색 키워드 \n\t- 선물\n\t  - 기념품 \n\n감사합니다.", _charset = 'utf-8')
