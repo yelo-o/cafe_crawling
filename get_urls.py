@@ -8,9 +8,9 @@ from credentials import u_id, u_pw
 
 # 검색 키워드
 urls = []
-# keywords = ['선물', '기념품']
+keywords = ['선물', '기념품']
 
-keywords = ['선물']  # test1
+# keywords = ['선물']  # test1
 
 
 

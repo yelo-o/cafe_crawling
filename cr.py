@@ -10,6 +10,7 @@ from credentials import u_id, u_pw
 from get_urls import urls
 
 
+
 # 변수 설정
 now = datetime.now()
 st_now = str(now)
@@ -127,37 +128,68 @@ def data_to_excel(crawling_time):
     
     
     # 판다스 데이터 만들기
-    index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
-    df = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
+    # index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
+    df = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls})
     # df = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
     
     
-    # 전일 ~ 금일만 필터링
-    df['날짜'] = pd.to_datetime(df['날짜'], errors='coerce')
-    df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d.').dt.date
     
     # 어제 날짜 계산하기
     now = pd.Timestamp.now()
     yesterday = now - pd.Timedelta(days=1)
     
-    filtered_data = df[df['날짜'] >= yesterday].copy()
+    # filtered_data = df[df['날짜'] >= yesterday].copy()
+    filtered_data = df
     
-    
-    ## 중복행 제거
-    filtered_data.drop_duplicates(keep='first', inplace=True,
-                                  ignore_index=True)
     
     ## 내림차순 정렬
     # filtered_data.sort_values(by='시간', ascending=False, inplace=True)  # 시간 내림차순 정렬
     filtered_data.sort_values(by='날짜', ascending=False, inplace=True)  # 날짜 내림차순 정렬
     
     # 0행부터 시작 -> 1행부터 시작
-    filtered_data.index = filtered_data.index + 1  
+    # filtered_data.index = filtered_data.index + 1
     
     ## 인덱스 이름 No.로 지정 
-    filtered_data.index.name = "No."
+    # filtered_data.index.name = "No."
     
-    filtered_data.to_excel(f"{crawling_time} 감동타임 키워드 검색.xlsx",index=True)
+    filtered_data.to_excel(f"{crawling_time} 감동타임 키워드 검색.xlsx",index=False)
+    
+    '''
+    누적 데이터 갱신
+    '''
+    ## 누적 데이터 갱신('gamdong.xlsx')
+    df_old = pd.read_excel('gamdong.xlsx')  # 이전 크롤링 데이터 불러오기
 
-#감동타임 키워드
+    df_new = pd.read_excel(f'{crawling_time} 감동타임 키워드 검색.xlsx')  # New data
+
+    # # 중복 데이터 확인
+    # df_dup = df_new[df_new.duplicated()]
+
+    # 중복 데이터 삭제
+    df_new.drop_duplicates(inplace=True)
+
+    # 이전 데이터와 새로운 데이터를 합침
+    df_concat = pd.concat([df_old, df_new], axis=0)
+
+    # 중복 데이터 제거
+    df_concat.drop_duplicates(subset=['url'],keep='first', inplace=True)
+    
+    # 중복 제거된 데이터를 엑셀 파일로 저장
+    df_concat.to_excel('gamdong.xlsx', index=False)
+    
+    dd = pd.read_excel('gamdong.xlsx')
+    
+    df_concat2 = pd.concat([dd, df_old], axis=0)
+    
+    
+    df_concat2.drop_duplicates(subset=['url'], keep=False, inplace=True)  # 겹치는 데이터들을 모두 없애야 함(keep=False)
+    
+    
+    # 인덱스 1부터 시작하도록 수정
+    df_concat2.index = range(1, len(df_concat2)+1)  # 1부터 다시 대입
+    print("df_concat2 \n" ,df_concat2)
+    
+    df_concat2.to_excel(f'{crawling_time} 감동타임 키워드 신규 검색 결과.xlsx', index=True)
+
+# 함수 실행
 crawling_process()

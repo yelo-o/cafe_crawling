@@ -19,7 +19,7 @@ print(df)
 df_old = pd.read_excel('gamdong.xlsx')
 
 # 새로운 크롤링 데이터 불러오기
-df_new = pd.read_excel('new_data.xlsx')
+df_new = pd.read_excel(f'{crawling_time} 감동타임 키워드 검색.xlsx')
 
 # 중복 데이터 확인
 df_dup = df_new[df_new.duplicated()]
@@ -34,4 +34,4 @@ df_concat = pd.concat([df_old, df_new], axis=0)
 df_concat.drop_duplicates(subset=['url'],keep='first', inplace=True)
 
 # 중복 제거된 데이터를 엑셀 파일로 저장
-df_concat.to_excel('result.xlsx', index=False)
+df_concat.to_excel(f'{crawling_time} 감동타임 키워드 검색.xlsx', index=False)
