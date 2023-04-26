@@ -26,7 +26,6 @@ def mailing():
     msg.set_charset("utf-8")
 
     # 제목 입력
-    # msg['subject'] = f'[{crawling_time}]네이버 카페 크롤링 공유의 件'
     msg['subject'] = f'[감동타임] 인사쟁이카페 크롤링 데이터 공유의 件_ {crawling_time} '
     # 보내는 사람
     msg['From'] = '김민규 <flyordig@etners.com>'
@@ -38,9 +37,8 @@ def mailing():
     
     # 참조
     msg['Cc'] = ", ".join(['cjkaszzang@etners.com', 'mijung806@etners.com',
-                           'haeun1106@etners.com', 'flyordig@etners.com']) # 심대현, 권아성, 박미정, 김하은, 김민규, 한진솔
-    # msg['Cc'] = ", ".join(['flyordig@etners.com','hyew7920@etners.com']) # 단체 테스트용
-    
+                           'haeun1106@etners.com']) # 권아성, 박미정, 김하은
+
     # 내용 입력
     body = MIMEText(f" 안녕하세요,\n\n 디지털혁신그룹 크롤링 봇입니다. \n\n {crawling_time} 에 [인사쟁이 카페]에서 감동타임 키워드 크롤링 진행한 엑셀 파일 전달드립니다.\n\n*해당 데이터는 크롤링 시간 기준 신규 인입 데이터이며, \n\n 사람의 개입없이 자동발송되므로 BO여부를 사전에 판단하지 못 하는점 양해부탁드립니다.\n\n□ 현재 검색 키워드 \n\t- 선물\n\t  - 기념품 \n\n감사합니다.", _charset = 'utf-8')
     msg.attach(body)
@@ -50,7 +48,6 @@ def mailing():
     part = MIMEBase('application', 'octet-stream')
     part.set_payload(open(path, "rb").read())
     encode_base64(part)
-    # part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(path))
     part.add_header('Content-Disposition', 'attachment', filename=file_name)
     msg.attach(part)
     
@@ -68,6 +65,6 @@ workbook = openpyxl.load_workbook(f'{crawling_time} 감동타임 키워드 신�
 # 시트 선택하기
 sheet = workbook.active
 
-# 2번째 행에 데이터가 있는 경우에만 함수 실행하기
+# 2번째 행에 데이터가 있는 경우(신규 데이터가 있는 경우)에만 함수 실행하기
 if sheet.cell(row=2, column=1).value is not None:
     mailing()

@@ -10,10 +10,6 @@ from credentials import u_id, u_pw
 urls = []
 keywords = ['선물', '기념품']
 
-# keywords = ['선물']  # test1
-
-
-
 # 셀레니움 실행
 # global browser
 options = webdriver.ChromeOptions()
