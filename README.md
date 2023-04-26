@@ -1,8 +1,6 @@
-## 깃 허브 다운로드 -> 모듈 설치 -> 실행 확인
+# 1. 실행되기 위한 조건
 
-# 실행되기 위한 조건
-
-## 조건1 디렉토리 위치 설정
+### (조건1) 디렉토리 위치 설정
 ```
 깃허브에서 다운로드 시, C드라이브 아래에 'flyordig' 라는 폴더를 만들고
 그 폴더에 cafe_crawling이라는 폴더에 모든 파일이 있어야 함.
@@ -15,7 +13,7 @@ C:\flyordig\cafe_crawling\
     - cr.py가 크롤링한 엑셀 파일의 위치를 proc.py와 mailing.py에서 참조하기 때문  
 ```
 
-## 조건2 파일확인
+### (조건2) 파일확인
 ```
 - 파일 목록
     · crawler.py
@@ -29,14 +27,14 @@ C:\flyordig\cafe_crawling\
 ★ credentials.py는 보안으로 인해 깃허브에 올려놓지 않았으므로 직접 파일을 만들어 내용 입력
 credentials.py를 새로 만들어서 양식에 맞게 아이디와 비밀번호 입력 양식은 아래의 함수 설명 참조
 ```
-## 조건3 모듈 설치
+### (조건3) 모듈 설치
 ```
 pip install selenium openpyxl pyperclip python-dateutil beautifulsoup4 pandas requests pyautogui
 ```
 cmd(명령프롬프트)에 상기의 명령어를 입력하여 모듈 다운로드
 
 
-## 함수 설명
+# 2. 함수 설명
 ### 0. crawler.py
     - 실행 파일
 ### 1. credentials.py 
@@ -54,6 +52,7 @@ u_pw = '네이버 비밀번호'
 ### 4. mailing.py
     - 메일링 연동
 
+# 3. 이력
 ## 2023.02.24(금)
     - 2023.02.27부로 감동타임으로 이관
         . 검색해서 새로운 검색 결과 데이터가 있을 경우에만 메일 발송
